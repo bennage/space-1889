@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document signature="Hero Lab Data">
+
+<thing
+    id="resRSSta"
+    name="Status"
+    compset="Resource">
+    <fieldval field="resMin" value="1" />
+    <tag group="Helper" tag="Bootstrap" />
+</thing>
+
+  <thing id="wpRSSaber" name="Saber" description="Useful from horseback" compset="Melee" summary="Saber">
+    <fieldval field="grCost" value="200"/>
+    <fieldval field="gearWeight" value="4"/>
+    <fieldval field="shortname" value="Saber"/>
+    <usesource source="TimeMedi" parent="TimePeriod" name="Medieval"/>
+    <usesource source="TimePowder" parent="TimePeriod" name="Black Powder"/>
+    <usesource source="Space1889" parent="UserParent" name="Space 1889"/>
+    <tag group="Equipment" tag="Standard" name="Standard equipment" abbrev="Standard equipment"/>
+    <tag group="WeaponDie" tag="3" name="d6" abbrev="d6"/>
+    </thing>
+  <thing id="hinObligat" name="Obligations" description="Although your hero has joined the Explorer&#146;s Society, he must also answer to his superiors. These can be military commanders, civilian authorities (such as the Foreign Office), religious functionaries, or other associations, but your character is legally or ethically bound to comply. You can expect your orders to occasionally be contradictory, inconvenient, or even dangerous. As a Minor Hindrance, your Obligations are binding, and any failure to comply converts this to a Wanted (Minor) Hindrance. As a Major Hindrance, your character&#146;s participation is considered crucial. If ignored, his Obligations become a Wanted (Major) Hindrance." compset="Hindrance" summary="Must also answer to his superiors">
+    <fieldval field="shortname" value="Obligations"/>
+    <usesource source="Space1889"/>
+    <tag group="User" tag="NeedDomain" name="NeedDomain" abbrev="NeedDomain"/>
+    <tag group="User" tag="UserSelect"/>
+    <tag group="DomainTerm" tag="Describe" name="Describe" abbrev="Describe"/>
+    </thing>
+  <thing id="edgPugilis" name="Pugilist" description="Your hero has learned to make his punches count. When fighting unarmed, he inflicts Strength +d6 damage with his fists." compset="Edge" summary="Strength +d6 damage with his fists" uniqueness="unique">
+    <usesource source="Space1889"/>
+    <tag group="MinRank" tag="0" name="Novice" abbrev="Novice"/>
+    <tag group="EdgeType" tag="Combat" name="Combat" abbrev="Combat"/>
+    <containerreq phase="Initialize" priority="2100">!source.Explorers</containerreq>
+    <eval phase="Initialize" priority="3000">hero.child[wpUnarmed].field[wpDmgBonus].value += 2</eval>
+    <exprreq message="Strength d6 required."><![CDATA[#trait[attrStr] >= 3]]></exprreq>
+    <exprreq message="Vigor d6 required."><![CDATA[#trait[attrVig] >= 3]]></exprreq>
+    <exprreq message="Fighting d8 required."><![CDATA[#traitfound[skFighting] >= 4]]></exprreq>
+    </thing>
+  <thing id="edgNob1889" name="Noble (Space 1889)" description="This Edge is altered from the core system. Nobles in the Victorian era often had others to handle any obligations due to their station, and the benefits of their status outweighed what obligations they did have. However, a noble title was not a guarantee of wealth. In  Red Sands, Noble does not convey any major obligations, but it also does not provide the Rich Edge for free. A hero with this Edge has a starting Status of +1 step, in addition to other bonuses." compset="Edge" summary="+2 Charisma;  +1 Status" uniqueness="unique">
+    <usesource source="Space1889"/>
+    <tag group="MinRank" tag="0" name="Novice" abbrev="Novice"/>
+    <tag group="EdgeType" tag="Background" name="Background" abbrev="Background"/>
+    <eval phase="PreTraits" priority="5000"><![CDATA[
+      perform #traitadjust[trCharisma,+,2,"Noble"]]]>
+      <before name="Calc trtFinal"/>
+      </eval>
+    </thing>
+  <thing id="edgRSInven" name="Inventor" description="Novice, Smarts d8+, Knowledge (Science) d6+, Knowledge (Engineering) d6+, Knowledge \n(Mechanics) d6+, Repair d4+\nYou start the game with two prototype inventions completed (pending GM approval), each with Reliability d6. In addition, you earn 2d6 x &#163;10 each year from royalties on your mundane patents." compset="Edge" summary="You start the game with two prototype inventions completed." uniqueness="unique">
+    <usesource source="Space1889"/>
+    <tag group="MinRank" tag="0" name="Novice" abbrev="Novice"/>
+    <tag group="EdgeType" tag="Background" name="Background" abbrev="Background"/>
+    <tag group="Arcane" tag="WeirdSci"/>
+    </thing>
+  <thing id="hinJingois" name="Jingoistic" description="This is the age of imperialism and colonialism, with its widespread belief in cultural superiority. The character with this Hindrance dislikes people from other cultures and believes his own culture to be vastly superior. He can&#146;t help belittling other cultures and praising the virtues of his own at every opportunity. \n\nA character taking the Minor version of this Hindrance has a &#150;2 Charisma among cultures other than his own. The penalty increases to &#150;4 for the Major Hindrance. In both cases, the character may not use Leadership Edges with &#147;foreigners&#148; unless he has worked with them for at least one week and succeeded at a Persuasion check. (May repeat the check once per week until successful.)" compset="Hindrance" summary="Dislikes people from other cultures" uniqueness="unique">
+    <usesource source="Space1889"/>
+    <tag group="User" tag="UserSelect"/>
+    </thing>
+  <thing id="hinLandLov" name="Land Lover" description="Some people never feel comfortable leaving solid ground. Your hero cannot buy any skills used to operate sailing ships or aerial flyers (i.e., Boating, Knowledge: Navigation, Knowledge: Trimsman, and Piloting) with starting skill points. Although he can learn these skills through advancement, he never quite grasps the concepts and always suffers a &#150;2 on skill rolls. Worse, his clumsiness affects his fellow sailors, inflicting a &#150;2 to group rolls to operate any vessel where he is a crewmember (including an officer)." compset="Hindrance" summary="-2 to naval skills" uniqueness="unique">
+    <fieldval field="shortname" value="Land Lover"/>
+    <usesource source="Space1889"/>
+    <tag group="User" tag="HindMajor"/>
+    <eval phase="PreTraits" priority="5000"><![CDATA[
+      perform #traitroll[skRepair,-,2,"All Thumbs"]]]>
+      <before name="Calc trtFinal"/>
+      </eval>
+    </thing>
+  <thing id="wpTranter" name="Tranter Revolver" description="http://en.wikipedia.org/wiki/Tranter_Revolver" compset="Ranged" summary="single trigger double-action cap &amp; ball revolver">
+    <fieldval field="wpDamage" value="2d6"/>
+    <fieldval field="wpShort" value="12"/>
+    <fieldval field="wpMedium" value="24"/>
+    <fieldval field="wpLong" value="48"/>
+    <fieldval field="wpShots" value="6"/>
+    <fieldval field="wpAmmo" value=".44"/>
+    <fieldval field="grCost" value="200"/>
+    <fieldval field="gearWeight" value="4"/>
+    <fieldval field="wpPiercing" value="1"/>
+    <usesource source="Space1889"/>
+    <tag group="Weapon" tag="Revolver" name="Revolver" abbrev="Revolver"/>
+    <tag group="Equipment" tag="Standard" name="Standard equipment" abbrev="Standard equipment"/>
+    <tag group="WeaponType" tag="ModPistol" name="Modern Pistol" abbrev="Modern Pistol"/>
+    </thing>
+  <thing id="wpRSSwordC" name="Sword Cane" compset="Melee" summary="+1 Parry">
+    <fieldval field="grCost" value="200"/>
+    <fieldval field="gearWeight" value="4"/>
+    <fieldval field="wpParry" value="1"/>
+    <usesource source="Space1889" parent="UserParent" name="Space 1889"/>
+    <tag group="WeaponDie" tag="2"/>
+    <tag group="Equipment" tag="Standard" name="Standard equipment" abbrev="Standard equipment"/>
+    </thing>
+  <thing id="powRSBolt1" name="Static Electricity Redistributor" description="A small, handheld device that collects static electricity and emits a bolt. The damage of the bolt is 2d6.\n\n{b}Additional Bolts:{/b} The character may fire up to 3 {i}bolts{/i} by spending a like amount of Power Points. The {i}bolts{/i} may be spread among targets as the character chooses. This is rolled just like fully-automatic weapons fire but without the full-auto penalty&#151;the character rolls a spellcasting die for each bolt and compares each to the Target Number separately. If the caster is a Wild Card, he also rolls a Wild Die, which may replace any of the casting dice.\n\n{b}Additional Damage:{/b} The character  may instead fire a single 3d6 {i}bolt{/i} for 2 Power Points. He may not fire multiple {i}bolts{/i} when using this ability.\n\n{b}Armor Piercing:{/b} The electricity arcs to a foe&#146;s exposed areas, ignoring some armor (AP 2) at a cost of +1 Power Point. \n\n{b}Conduction:{/b} Reduce damage by one die type, but add an additional die of damage to targets in the following situations: \n\n* carrying more than 10 pounds of conductive metal\n* contacting a source of water\n* touching an electrical conductor of some kind\n\nFor instance, an electrical blast at maximum effect does 3d4 damage in a Large Burst Template, but if the targets are standing in water, they take 4d4 damage.\n\n{b}Spasms:{/b} Cause temporary muscle contraction if cast with a raise; the target has to make a Vigor roll or be at &#150;2 Parry until his next action." compset="Power" summary="Single bolt 2d6 damage; Up to 3 bolts at 1pt per bolt; 2pts does one 3d6 bolt" uniqueness="unique">
+    <fieldval field="powPoints" value="1-3"/>
+    <fieldval field="powRange" value="12/24/48"/>
+    <fieldval field="powLength" value="Instant"/>
+    <fieldval field="powTraps" value="Electricity"/>
+    <fieldval field="powPrtLen" value="Inst"/>
+    <usesource source="Space1889"/>
+    <tag group="MinRank" tag="0" name="Novice" abbrev="Novice"/>
+    <tag group="Powers" tag="Standard" name="Standard arcane power" abbrev="Standard arcane power"/>
+    <tag group="ArcaneDeny" tag="ChiMastery"/>
+    <tag group="ArcaneDeny" tag="Magic"/>
+    <tag group="ArcaneDeny" tag="Miracles"/>
+    <tag group="ArcaneDeny" tag="Psionics"/>
+    <tag group="ArcaneDeny" tag="SPCSupers"/>
+    <tag group="ArcaneDeny" tag="Shaman"/>
+    <tag group="ArcaneDeny" tag="SuperPower"/>
+    </thing>
+  <thing id="eqRSAspiri" name="Aspirin" description="Analgesic medicine derived from salicylic acid, for relieving pain and the symptoms of fever. When taken every four hours while injured or ill, the user may ignore 1 wound penalty for an hour on a successful Reliability roll, and gains +1 to Vigor checks to recover from fever (two hours and +2 on a raise). Dosage is two pills for an adult or one pill for a child every four hours. More dosages within the same duration have no additional effect. Negligible weight (but roughly 1/2 pound for 1,600 pills).\n\nScience +1" compset="Equipment" stacking="merge">
+    <fieldval field="grCost" value="4"/>
+    <fieldval field="gearWeight" value="0.5"/>
+    <usesource source="Space1889"/>
+    <tag group="GearType" tag="Medical"/>
+    <tag group="Equipment" tag="Standard" name="Standard equipment" abbrev="Standard equipment"/>
+    <containerreq phase="Initialize" priority="3000">!source.Fantasy</containerreq>
+    </thing>
+  <thing id="eqRSDetoni" name="Detonite" description="More powerful than dynamite, more stable than nitroglycerin. Detonite is available in half-pound sticks like dynamite, but each stick has a damage value of 2 times Reliability (2d4, 2d6, 2d8, etc.) and explodes in a Medium Burst Template. Additional detonite sticks increase damage by +1 and add +1&#148; to the effective blast radius. Weighs 1/2 pound per stick.\n\nEngineering, Science, -4" compset="Equipment" summary="More powerful than dynamite, more stable than nitroglycerin." stacking="merge">
+    <fieldval field="gearWeight" value="0.5"/>
+    <fieldval field="grCost" value="5"/>
+    <usesource source="Space1889"/>
+    <tag group="Equipment" tag="Standard"/>
+    <tag group="GearType" tag="Adventure"/>
+    </thing>
+  <thing id="eqRSInfrar" name="Infrared Liquid Sight" description="Drops of this liquid into the eyes enables the user to see into the infrared spectrum of light, as per the Infravision monstrous ability. The duration is Reliability in hours. The drops require a successful Reliability roll to function. Weighs 1 ounce per dose." compset="Equipment" stacking="merge" uniqueness="unique">
+    <fieldval field="grCost" value="50"/>
+    <fieldval field="gearWeight" value="0.1"/>
+    <usesource source="Space1889" parent="UserParent" name="Space 1889"/>
+    <tag group="GearType" tag="Adventure"/>
+    <tag group="Equipment" tag="Standard" name="Standard equipment" abbrev="Standard equipment"/>
+    </thing>
+  <thing id="eqRSHandLa" name="Hand Lamp" description="Perfected as Ruhmkorff&#146;s Apparatus, this illumination device is attached by a cord to a voltaic battery and a hand-cranked generator on a belt or backpack. \nIn darkness, it provides six feet (1&#148;) of visibility per Reliability die. Weighs 5 pounds. Voltaic cells are purchased separately.\n\nMechanics +3" compset="Equipment" uniqueness="unique">
+    <fieldval field="grCost" value="20"/>
+    <fieldval field="gearWeight" value="5"/>
+    <usesource source="Space1889"/>
+    <tag group="GearType" tag="Adventure" name="Adventuring Gear" abbrev="Adventuring Gear"/>
+    <tag group="Equipment" tag="Standard" name="Standard equipment" abbrev="Standard equipment"/>
+    <containerreq phase="Initialize" priority="3000">!source.Fantasy</containerreq>
+    </thing>
+  <thing id="eqRSVoltai" name="Voltaic Cell" compset="Equipment" summary="Primitive battery" stacking="merge">
+    <fieldval field="grCost" value="50"/>
+    <fieldval field="gearWeight" value="1"/>
+    <usesource source="Space1889"/>
+    <tag group="Equipment" tag="Standard"/>
+    <tag group="GearType" tag="Adventure"/>
+    </thing>
+  <thing id="eqRSToolki" name="Toolkit" description="+1 to a specific skill, exhausts on skill roll of 1" compset="Equipment" summary="+1 to a specific skill, exhausts on skill roll of 1">
+    <fieldval field="grCost" value="500"/>
+    <fieldval field="gearWeight" value="10"/>
+    <usesource source="Space1889"/>
+    <tag group="Equipment" tag="Standard"/>
+    <tag group="GearType" tag="Adventure"/>
+    </thing>
+  <thing id="wpParadoxG" name="Paradox Gun" description="http://en.wikipedia.org/wiki/Paradox_gun" compset="Ranged" uniqueness="unique">
+    <fieldval field="wpDamage" value="2d8"/>
+    <fieldval field="wpPiercing" value="2"/>
+    <fieldval field="wpShort" value="15"/>
+    <fieldval field="wpMedium" value="30"/>
+    <fieldval field="wpLong" value="60"/>
+    <fieldval field="wpReload" value="3"/>
+    <fieldval field="wpAmmo" value=".45"/>
+    <fieldval field="grCost" value="300"/>
+    <fieldval field="gearWeight" value="8"/>
+    <usesource source="TimePowder" parent="TimePeriod" name="Black Powder"/>
+    <tag group="StrReqDie" tag="3" name="d6" abbrev="d6"/>
+    <tag group="WeaponType" tag="Black" name="Black Powder" abbrev="Black Powder"/>
+    <tag group="Equipment" tag="Standard" name="Standard equipment" abbrev="Standard equipment"/>
+    <tag group="Equipment" tag="TwoHand" name="Requires two hands" abbrev="Requires two hands"/>
+    </thing>
+  <thing id="edgRSDirty" name="Dirty Fighter" description="You never learned to fight like a &#147;gentleman,&#148; and use  any trick in the book to win. Those with this Edge are particularly good at tricks, gaining a +2 to all Trick maneuver rolls." compset="Edge" summary="+2 to all Trick maneuver rolls" uniqueness="unique">
+    <usesource source="Space1889"/>
+    <tag group="MinRank" tag="0" name="Novice" abbrev="Novice"/>
+    <tag group="EdgeType" tag="Combat"/>
+    </thing>
+  <thing id="edgRSActor" name="Actor/Actress" description="Requirements: Novice, Charisma +2 or greater, Persuasion d8+\n\nYou know how to play to an audience! You gain a +2 to Persuasion when adopting a role, plus 2 additional languages. You are a professional performer, earning value in pounds equal to your Persuasion roll on a success. On snake eyes, however, your performance is a flop, dropping your Status by &#150;2 and possibly inciting challenges from outraged critics and audience members." compset="Edge" summary="+2 to Persuasion when adopting a role" uniqueness="unique">
+    <usesource source="Space1889"/>
+    <tag group="MinRank" tag="0" name="Novice" abbrev="Novice"/>
+    <tag group="User" tag="Activation"/>
+    <tag group="EdgeType" tag="Profession" name="Professional" abbrev="Professional"/>
+    <eval phase="Final" priority="2000">#resmax[resLang] += 2
+#resleft[resLang] += 2</eval>
+    <eval phase="PreTraits" priority="2000" index="2"><![CDATA[perform #traitprof[skPersuade,+,2,"Actor/Actress"]]]></eval>
+    <exprreq message="Charisma 2+ required."><![CDATA[#trait[trCharisma] >= 2]]></exprreq>
+    <exprreq message="Persuasion d8 required."><![CDATA[#traitfound[skPersuade] >= 4]]></exprreq>
+    </thing>
+  </document>
