@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document signature="Hero Lab Data">
-
-<thing
-    id="resRSSta"
-    name="Status"
-    compset="Resource">
-    <fieldval field="resMin" value="1" />
-    <tag group="Helper" tag="Bootstrap" />
-</thing>
-
   <thing id="wpRSSaber" name="Saber" description="Useful from horseback" compset="Melee" summary="Saber">
     <fieldval field="grCost" value="200"/>
     <fieldval field="gearWeight" value="4"/>
@@ -41,7 +32,9 @@
     <tag group="MinRank" tag="0" name="Novice" abbrev="Novice"/>
     <tag group="EdgeType" tag="Background" name="Background" abbrev="Background"/>
     <eval phase="PreTraits" priority="5000"><![CDATA[
-      perform #traitadjust[trCharisma,+,2,"Noble"]]]>
+      perform #traitadjust[trCharisma,+,2,"Noble"]
+
+      perform #traitadjust[trRSStatus,+,1,"Noble"]]]>
       <before name="Calc trtFinal"/>
       </eval>
     </thing>
@@ -179,5 +172,27 @@
     <eval phase="PreTraits" priority="2000" index="2"><![CDATA[perform #traitprof[skPersuade,+,2,"Actor/Actress"]]]></eval>
     <exprreq message="Charisma 2+ required."><![CDATA[#trait[trCharisma] >= 2]]></exprreq>
     <exprreq message="Persuasion d8 required."><![CDATA[#traitfound[skPersuade] >= 4]]></exprreq>
+    </thing>
+  <thing id="trRSStatus" name="Status" description="Status is a measure of your character&apos;s social standing" compset="Trait" uniqueness="unique">
+    <fieldval field="shortname" value="Status"/>
+    <fieldval field="trtBonus" value="2"/>
+    <usesource source="Space1889"/>
+    <tag group="DashTacCon" tag="Basics" name="Basics" abbrev="Basics"/>
+    <tag group="explicit" tag="5"/>
+    <tag group="DashTacCon" tag="Traits" name="Traits" abbrev="Traits"/>
+    <eval phase="Traits" priority="4000" name="Calc Derived Bonus">~charisma is 0 unless overridden by other effects (e.g. edges/hindrances)
+      ~Note: We ADD the amount in case other effects have already applied adjustments.
+      ~field[trtBonus].value += 2
+      <before name="Derived trtFinal"/>
+      <after name="Calc trtFinal"/>
+      </eval>
+    </thing>
+  <thing id="edgRSRich" name="Rich (Space 1889)" description="Whether your hero was born with a silver spoon in his mouth or earned it through hard work, he&#146;s got more money than most others.{br}{br}The guidelines below are listed in modern terms so that your GM can fi gure out exactly what it means in campaign worlds of his own creation.{br}{br}Rich heroes start with three times the normal starting funds for the setting. If a regular income is appropriate for this setting, the hero receives the modern day equivalent of a $75,000 annual salary." compset="Edge" summary="Three times starting funds; High annual salary" uniqueness="unique">
+    <tag group="EdgeType" tag="Background" name="Background" abbrev="Background"/>
+    <tag group="MinRank" tag="0" name="Novice" abbrev="Novice"/>
+    <eval phase="Setup" priority="5000">
+      herofield[acCashMult].value += 2</eval>
+    <eval phase="PreTraits" index="2"><![CDATA[
+      perform #traitadjust[trRSStatus,+,1,"Noble"]]]></eval>
     </thing>
   </document>
